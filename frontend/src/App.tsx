@@ -97,6 +97,11 @@ type FormState = {
 
 const DEFAULT_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 const TIME_ZONE_OPTIONS = buildTimeZoneOptions(DEFAULT_TIME_ZONE);
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+
+function apiUrl(path: string) {
+  return `${API_BASE_URL}${path}`;
+}
 
 export default function App() {
   const [reference, setReference] = useState<ReferenceData | null>(null);
@@ -108,7 +113,7 @@ export default function App() {
   useEffect(() => {
     const loadReference = async () => {
       try {
-        const response = await fetch("/api/reference");
+        const response = await fetch(apiUrl("/api/reference"));
         if (!response.ok) {
           throw new Error("Failed to load troop reference data.");
         }
@@ -148,7 +153,7 @@ export default function App() {
         throw new Error("Incoming landing time is invalid.");
       }
 
-      const response = await fetch("/api/calculate", {
+      const response = await fetch(apiUrl("/api/calculate"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

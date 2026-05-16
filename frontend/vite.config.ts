@@ -6,7 +6,12 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      "/api": "http://localhost:8080",
+      "/api": {
+        target: process.env.BACKEND_URL || "https://travian-interceptor-backend-latest.onrender.com",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path: string) => path.replace(/^\/api/, "/api"),
+      },
     },
   },
 });
