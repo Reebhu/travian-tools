@@ -1,7 +1,0 @@
-services:
-  backend:
-    platform: linux/amd64
-    build: .
-    image: travian-interceptor-backend:latest
-    ports:
-      - "8080:8080"
